@@ -3,6 +3,6 @@ const analyseRoutes = require('./analyseRoutes.js')
 const {requireAuth} = require('../middleware/authMiddleware.js')
 const router = Router()
 
-router.use('/analyse', requireAuth, analyseRoutes) 
+router.use('/analyse',analyseRoutes) 
 
 module.exports= router;
