@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/phildehovre/hpm-node-api/issues"
   },
-  "homepage": "https://github.com/phildehovre/hpm-node-api#readme"
+  "homepage": "https://github.com/phildehovre/hpm-node-api#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
 }
