@@ -1,0 +1,19 @@
+{
+  "name": "hpm-node-api",
+  "version": "1.0.0",
+  "description": "Video upload to generate keyword via Gemini AI",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phildehovre/hpm-node-api.git"
+  },
+  "author": "Philippe De Hovre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phildehovre/hpm-node-api/issues"
+  },
+  "homepage": "https://github.com/phildehovre/hpm-node-api#readme"
+}
