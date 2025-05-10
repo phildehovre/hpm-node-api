@@ -1,8 +1,11 @@
 const { Router } = require('express')
 const analyseRoutes = require('./analyseRoutes.js')
-const {requireAuth} = require('../middleware/authMiddleware.js')
 const router = Router()
+const multer = require('multer')
 
-router.use('/analyse',analyseRoutes) 
+const upload = multer({ storage: multer.memoryStorage() }); // Use memory storage to avoid saving files
+
+
+router.use('/analyse',upload.single("videos"), analyseRoutes) 
 
 module.exports= router;
