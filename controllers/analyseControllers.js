@@ -5,7 +5,7 @@ const { GoogleAuth } = require('google-auth-library');
 const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'); // Handle newline format
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'); 
 
 if (!GOOGLE_APPLICATION_CREDENTIALS) {
   console.error('Error: GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.');
@@ -24,8 +24,6 @@ const ai = new GoogleGenAI({ apiKey: GOOGLE_API_KEY });
 
 async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
   const fileSize = fileBuffer.length;
-  console.log(fileBuffer.length)
-  console.log('File Size (inside function):', fileSize);
 
   if (!fileSize) {
     throw new Error('File size could not be determined.');
@@ -39,10 +37,7 @@ async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
     }
   };
 
-  console.log('Upload Parameters:', uploadParams);
-
    const myfile = await ai.files.upload(uploadParams)
-
 
 const response = await ai.models.generateContent({
   model: "gemini-2.0-flash",
