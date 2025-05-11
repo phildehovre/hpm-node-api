@@ -24,6 +24,7 @@ const ai = new GoogleGenAI({ apiKey: GOOGLE_API_KEY });
 
 async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
   const fileSize = fileBuffer.length;
+  console.log(fileBuffer.length)
   console.log('File Size (inside function):', fileSize);
 
   if (!fileSize) {
@@ -32,7 +33,7 @@ async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
 
   const uploadParams = {
     file: fileBuffer,
-    sizeBytes: fileSize,
+    size_bytes: fileSize,
     config: {
       mimeType: mimeType 
     }
@@ -55,6 +56,7 @@ const response = await ai.models.generateContent({
 }
 
 module.exports.analyse = async (req, res) => {
+  console.log(req.file)
     try {
         const fileBuffer = req.file.buffer;
         const mimeType = req.file.mimetype;
