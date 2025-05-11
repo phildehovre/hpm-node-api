@@ -3,7 +3,7 @@ const analyseRoutes = require('./analyseRoutes.js')
 const router = Router()
 const multer = require('multer')
 
-const upload = multer({ storage: multer.memoryStorage() }); // Use memory storage to avoid saving files
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.use('/analyse',upload.single("videos"), analyseRoutes) 
 

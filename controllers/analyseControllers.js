@@ -1,5 +1,6 @@
-const {GoogleGenAI, createUserContent, createPartFromUri} = require('@google/genai')
+const {createUserContent, createPartFromUri, Part} = require('@google/genai')
 const { GoogleAuth } = require('google-auth-library');
+const genAI = require('../services/genAI.js')
 
 
 const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
@@ -19,8 +20,6 @@ const auth = new GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/cloud-platform'],
 });
 
-const ai = new GoogleGenAI({ apiKey: GOOGLE_API_KEY });
-
 
 async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
   const fileSize = fileBuffer.length;
@@ -37,9 +36,11 @@ async function uploadAndAnalyzeVideo(fileBuffer, mimeType) {
     }
   };
 
-   const myfile = await ai.files.upload(uploadParams)
 
-const response = await ai.models.generateContent({
+   const myfile = await genAI.files.upload(uploadParams)
+
+
+const response = await genAI.models.generateContent({
   model: "gemini-2.0-flash",
   contents: createUserContent([
     createPartFromUri(myfile.uri, mimeType), 
@@ -67,3 +68,45 @@ module.exports.analyse = async (req, res) => {
         res.status(500).json({ error: "Error processing video file.", details: error.message });
       }
 }
+
+// Get an instance of the generative model
+
+// List of approved descriptive keywords (ideally fetched from a database or config)
+const approvedKeywords = ["action", "comedy", "nature", "animals", "sports", "cooking", "travel", "animation"];
+
+exports.analyseVideo = async (req, res) => {
+  console.log(req.file);
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No video file uploaded.' });
+        }
+        const videoBuffer = req.file.buffer;
+        const mimeType = req.file.mimetype;
+
+        const promptText = `Describe the content of this video using only the following keywords: ${approvedKeywords.join(', ')}. Be concise.`;
+
+        const videoPart = {
+            inlineData: {
+                data: videoBuffer.toString('base64'),
+                mimeType: mimeType
+            }
+        };
+
+        const response = await genAI.models.generateContent({
+            model: "gemini-2.0-flash", // Or a model that supports vision
+            contents: createUserContent([
+                videoPart, // Pass the object directly into createUserContent
+                promptText,
+            ]),
+        });
+
+        const analysis = response.candidates[0].content.parts[0].text;
+        console.log(response)
+
+        res.status(200).json({ analysis: analysis });
+
+    } catch (error) {
+        console.error('Error analyzing video:', error);
+        res.status(500).json({ error: 'Failed to analyze video.', details: error.message });
+    }
+};

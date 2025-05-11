@@ -3,5 +3,6 @@ const router = Router()
 const analyseControllers = require('../controllers/analyseControllers.js')
 
 router.post('', analyseControllers.analyse)
+router.post('/default', analyseControllers.analyseVideo)
 
 module.exports = router;
