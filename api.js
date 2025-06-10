@@ -10,29 +10,28 @@ const routes = require("./routes/routes.js");
 // For production, you will need to allow your deployed frontend's URL.
 
 const allowedOrigins = [
-	"http://localhost:5173", // Your frontend local development URL
-	// Add your production frontend URL here when you deploy it
-	// e.g., 'https://your-frontend-production-url.com',
-	// Make sure to use 'https' for production URLs if applicable
+	"http://localhost:5173",
+	// IMPORTANT: Add your deployed frontend URL here!
+	// For example: 'https://your-actual-frontend-url.com'
 ];
 
 const corsOptions = {
 	origin: function (origin, callback) {
-		// Check if the requesting origin is in our allowed list
+		console.log("CORS Origin:", origin); // <--- ADD THIS LOG
+		console.log("Allowed Origins:", allowedOrigins); // <--- AND THIS LOG
 		if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-			// If the origin is in the allowed list, or it's a non-browser request (like Postman or a server-to-server call where origin might be undefined), allow it.
 			callback(null, true);
 		} else {
-			// If the origin is not allowed, deny it.
+			console.error("CORS blocked for origin:", origin); // <--- ADD THIS LOG
 			callback(new Error("Not allowed by CORS"));
 		}
 	},
-	methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allow specific HTTP methods
-	credentials: true, // Allow cookies to be sent
-	optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 200 responses for OPTIONS
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	credentials: true,
+	optionsSuccessStatus: 204,
 };
 
-app.use(cors(corsOptions)); // Apply the CORS middleware with your options
+app.use(cors(corsOptions));
 
 // ... rest of your Express routes and middleware
 // e.g., app.use('/api/v1/analyse', analyseRouter);
