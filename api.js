@@ -9,6 +9,8 @@ const routes = require("./routes/routes.js");
 // For local development, you can allow http://localhost:5173.
 // For production, you will need to allow your deployed frontend's URL.
 
+const PORT = process.env.PORT || "8080";
+
 const allowedOrigins = [
 	"http://localhost:5173",
 	// IMPORTANT: Add your deployed frontend URL here!
@@ -17,12 +19,22 @@ const allowedOrigins = [
 
 const corsOptions = {
 	origin: function (origin, callback) {
-		console.log("CORS Origin:", origin); // <--- ADD THIS LOG
-		console.log("Allowed Origins:", allowedOrigins); // <--- AND THIS LOG
-		if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+		console.log("CORS Origin:", origin);
+		console.log("Allowed Origins:", allowedOrigins);
+
+		// Explicitly check for null or undefined origins
+		// This generally implies a non-browser request or a file system request,
+		// which you might want to allow for local development/testing.
+		if (origin === null || origin === undefined) {
+			console.log("Allowing request with null/undefined origin.");
+			return callback(null, true);
+		}
+
+		// Check if the requesting origin is in our allowed list
+		if (allowedOrigins.indexOf(origin) !== -1) {
 			callback(null, true);
 		} else {
-			console.error("CORS blocked for origin:", origin); // <--- ADD THIS LOG
+			console.error("CORS blocked for origin:", origin);
 			callback(new Error("Not allowed by CORS"));
 		}
 	},
@@ -32,23 +44,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// ... rest of your Express routes and middleware
-// e.g., app.use('/api/v1/analyse', analyseRouter);
-
-const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
-	console.log(`Backend service listening on port ${port}`);
-});
-
-const PORT = process.env.PORT || "8080";
-
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/v1", routes);
 
-app.listen(PORT, () =>
-	console.log("server is running on port", process.env.PORT)
-);
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Backend service listening on port ${PORT}`);
+});
