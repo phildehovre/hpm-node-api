@@ -8,37 +8,30 @@ const PORT = process.env.PORT || "8080";
 
 const allowedOrigins = [
 	"http://localhost:5173", // Your frontend local development URL
-	// IMPORTANT: Add your deployed frontend URL(s) here!
-	// Example: 'https://your-frontend-app.com',
-	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app/",
+	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app", // Your deployed frontend URL
+	"null", // <--- ADD THIS LINE! Explicitly allow the string "null"
 ];
 
 const corsOptions = {
 	origin: function (origin, callback) {
-		// EXTREME LOGGING FOR DEBUGGING
+		// You can keep these DEBUG logs for one final confirmation, then remove them.
 		console.log("DEBUG: --- CORS ORIGIN START ---");
 		console.log("DEBUG: Type of origin:", typeof origin);
 		console.log("DEBUG: Value of origin (raw):", origin);
 		console.log("DEBUG: origin === null:", origin === null);
 		console.log("DEBUG: origin === undefined:", origin === undefined);
-		console.log("DEBUG: !origin:", !origin); // Should be true if null or undefined
+		console.log("DEBUG: !origin:", !origin);
 		console.log("DEBUG: Allowed Origins Configured:", allowedOrigins);
 		console.log("DEBUG: --- CORS ORIGIN END ---");
 
-		// Explicitly allow requests with 'null' or 'undefined' origin
-		if (origin === null || origin === undefined) {
-			console.log("ACTION: Allowing request with null/undefined origin.");
-			return callback(null, true);
-		}
-
-		// Check if the requesting origin is in our explicitly allowed list
+		// Now, the 'origin' which is the string "null" will be caught by indexOf
 		if (allowedOrigins.indexOf(origin) !== -1) {
 			console.log(`ACTION: Allowing request from origin: ${origin}`);
 			callback(null, true);
 		} else {
-			// If origin is not in allowed list, block it
+			// This else block should now *not* be hit if origin is the string "null"
 			console.error(`ACTION: CORS blocked for unauthorized origin: ${origin}`);
-			callback(new Error("Not allowed by CORS")); // This is the line that's still being hit
+			callback(new Error("Not allowed by CORS"));
 		}
 	},
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
