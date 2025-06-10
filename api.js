@@ -22,15 +22,13 @@ const corsOptions = {
 		console.log("CORS Origin:", origin);
 		console.log("Allowed Origins:", allowedOrigins);
 
-		// Explicitly check for null or undefined origins
-		// This generally implies a non-browser request or a file system request,
-		// which you might want to allow for local development/testing.
+		// 1. FIRST, handle null or undefined origins
 		if (origin === null || origin === undefined) {
 			console.log("Allowing request with null/undefined origin.");
-			return callback(null, true);
+			return callback(null, true); // <--- THE CRITICAL 'return' HERE
 		}
 
-		// Check if the requesting origin is in our allowed list
+		// 2. THEN, check the allowedOrigins array
 		if (allowedOrigins.indexOf(origin) !== -1) {
 			callback(null, true);
 		} else {
@@ -42,7 +40,6 @@ const corsOptions = {
 	credentials: true,
 	optionsSuccessStatus: 204,
 };
-
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
