@@ -18,24 +18,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-	origin: function (origin, callback) {
-		console.log("CORS Origin:", origin);
-		console.log("Allowed Origins:", allowedOrigins);
-
-		// 1. FIRST, handle null or undefined origins
-		if (origin === null || origin === undefined) {
-			console.log("Allowing request with null/undefined origin.");
-			return callback(null, true); // <--- THE CRITICAL 'return' HERE
-		}
-
-		// 2. THEN, check the allowedOrigins array
-		if (allowedOrigins.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			console.error("CORS blocked for origin:", origin);
-			callback(new Error("Not allowed by CORS"));
-		}
-	},
+	origin: "*",
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	credentials: true,
 	optionsSuccessStatus: 204,
