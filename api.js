@@ -10,6 +10,7 @@ const allowedOrigins = [
 	"http://localhost:5173", // Your frontend local development URL
 	// IMPORTANT: Add your deployed frontend URL(s) here!
 	// Example: 'https://your-frontend-app.com',
+	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app/",
 ];
 
 const corsOptions = {
