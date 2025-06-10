@@ -6,6 +6,6 @@ const { requireAuth } = require("../middleware/authMiddleware.js");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.use("/analyse", requireAuth, upload.array("videos"), analyseRoutes);
+router.use("/analyse", upload.array("videos"), analyseRoutes);
 
 module.exports = router;
