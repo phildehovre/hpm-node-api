@@ -10,6 +10,7 @@ const allowedOrigins = [
 	"http://localhost:5173",
 	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app",
 	"https://hpm-vite-client.vercel.app",
+	"https://staging.humanproductionmusic.com",
 	"null",
 	// "*",
 ];

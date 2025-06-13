@@ -1,7 +1,8 @@
-const {Router} = require('express')
-const router = Router()
-const analyseControllers = require('../controllers/analyseControllers.js')
+const { Router } = require("express");
+const router = Router();
+const analyseControllers = require("../controllers/analyseControllers.js");
+const requireAuth = require("../middleware/authMiddleware.js");
 
-router.post('', analyseControllers.analyseVideo)
+router.post("", requireAuth, analyseControllers.analyseVideo);
 
 module.exports = router;
