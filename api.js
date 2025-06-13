@@ -36,6 +36,7 @@ const corsOptions = {
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	credentials: true,
 	optionsSuccessStatus: 204,
+	allowedHeaders: ["Authorization", "Content-Type"], // DEBUG: Maybe this will block something..
 };
 
 app.use(cors(corsOptions));
