@@ -7,14 +7,15 @@ const routes = require("./routes/routes.js");
 const PORT = process.env.PORT || "8080";
 
 const allowedOrigins = [
-	"http://localhost:5173", // Your frontend local development URL
-	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app", // Your deployed frontend URL
-	"null", // <--- ADD THIS LINE! Explicitly allow the string "null"
+	"http://localhost:5173",
+	"https://hpm-vite-client-git-master-phildehovres-projects.vercel.app",
+	"https://hpm-vite-client.vercel.app/",
+	"null",
+	// "*",
 ];
 
 const corsOptions = {
 	origin: function (origin, callback) {
-		// You can keep these DEBUG logs for one final confirmation, then remove them.
 		console.log("DEBUG: --- CORS ORIGIN START ---");
 		console.log("DEBUG: Type of origin:", typeof origin);
 		console.log("DEBUG: Value of origin (raw):", origin);
@@ -24,12 +25,10 @@ const corsOptions = {
 		console.log("DEBUG: Allowed Origins Configured:", allowedOrigins);
 		console.log("DEBUG: --- CORS ORIGIN END ---");
 
-		// Now, the 'origin' which is the string "null" will be caught by indexOf
-		if (allowedOrigins.indexOf(origin) !== -1) {
+		if (!origin || allowedOrigins.indexOf(origin) !== -1) {
 			console.log(`ACTION: Allowing request from origin: ${origin}`);
 			callback(null, true);
 		} else {
-			// This else block should now *not* be hit if origin is the string "null"
 			console.error(`ACTION: CORS blocked for unauthorized origin: ${origin}`);
 			callback(new Error("Not allowed by CORS"));
 		}
